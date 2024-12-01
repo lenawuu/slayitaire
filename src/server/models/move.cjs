@@ -14,6 +14,7 @@ let Move = new Schema(
     src: { type: String },
     dst: { type: String },
     date: { type: Date },
+    player: { type: String },
   },
   { _id: false }
 );

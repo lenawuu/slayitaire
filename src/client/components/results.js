@@ -7,8 +7,30 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { ErrorMessage, InfoBlock, InfoData, InfoLabels } from "./shared.js";
 
+function formatMove(move) {
+  const dstType = move.dst.replace(/\d+$/, "");
+  const srcType = move.src.replace(/\d+$/, "");
+
+  const card = `${move.cards[0].value} of ${move.cards[0].suit.charAt(0).toUpperCase() + move.cards[0].suit.slice(1)}`;
+
+  let formatted = "";
+
+  if (dstType === "stack") {
+    formatted = `Moved ${card} to foundation ${move.dst.replace(/\D/g, "")}`;
+  } else if (dstType === "pile") {
+    if (srcType === "pile") {
+      formatted = `Moved ${move.cards.length} cards from tableau ${move.src.replace(/\D/g, "")} to tableau ${move.dst.replace(/\D/g, "")}`;
+    } else {
+      formatted = `Moved ${card} from stock to tableau ${move.dst.replace(/\D/g, "")}`;
+    }
+  } else if (move.src === "draw") {
+    formatted = `Drew ${card} from draw pile`;
+  }
+  return formatted;
+}
+
 const Move = ({ move, index }) => {
-  const duration = Date.now() - move.date;
+  const duration = (Date.now() - new Date(move.date)) / 1000;
   return (
     <tr>
       <th>{move.id ? move.id : index + 1}</th>
@@ -16,7 +38,7 @@ const Move = ({ move, index }) => {
       <th>
         <Link to={`/profile/${move.player}`}>{move.player}</Link>
       </th>
-      <th>{move.move}</th>
+      <th>{formatMove(move)}</th>
     </tr>
   );
 };

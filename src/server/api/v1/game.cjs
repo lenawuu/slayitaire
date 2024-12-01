@@ -270,6 +270,7 @@ module.exports = (app) => {
           src: move.src,
           dst: move.dst,
           date: Date.now(),
+          player: req.session.user.username,
         };
 
         toUpdate.moves.push(writeMove);
