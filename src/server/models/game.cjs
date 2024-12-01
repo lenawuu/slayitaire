@@ -4,6 +4,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const CardState = require("./card_state.cjs");
+const Move = require("./move.cjs");
 
 /***************** Game Model *******************/
 
@@ -43,7 +44,7 @@ let Game = new Schema({
   drawCount: { type: Number, default: 1 },
   score: { type: Number, default: 0 },
   won: { type: Boolean, default: false },
-  moves: { type: Number, default: 0 },
+  moves: { type: [Move], default: [] },
 });
 
 Game.pre("validate", function (next) {

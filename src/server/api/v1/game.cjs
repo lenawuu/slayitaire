@@ -44,6 +44,7 @@ module.exports = (app) => {
         start: Date.now(),
         winner: "",
         state: [],
+        moves: [],
       };
       switch (data.draw) {
         case "Draw 1":
@@ -262,11 +263,20 @@ module.exports = (app) => {
       const state = game.state.toJSON();
       try {
         const updated = validateMove(move, state);
-        const query = await app.models.Game.findOneAndUpdate(
-          { _id: gameId },
-          { state: updated },
-          { new: true }
-        );
+
+        const toUpdate = await app.models.Game.findById(gameId);
+        let writeMove = {
+          cards: move.cards,
+          src: move.src,
+          dst: move.dst,
+          date: Date.now(),
+        };
+
+        toUpdate.moves.push(writeMove);
+        toUpdate.state.set(updated);
+
+        await toUpdate.save();
+
         res.status(200).send(updated);
       } catch (validationError) {
         res.status(400).send({ error: validationError.message });

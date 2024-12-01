@@ -10,8 +10,6 @@ const CardState = require("./card_state.cjs");
 /* Schema for an individual move of Klondike */
 let Move = new Schema(
   {
-    user: { type: Schema.ObjectId, ref: "User", required: true, index: true },
-    game: { type: Schema.ObjectId, ref: "Game", required: true, index: true },
     cards: { type: [CardState] },
     src: { type: String },
     dst: { type: String },
@@ -25,4 +23,4 @@ Move.pre("validate", function (next) {
   next();
 });
 
-module.exports = mongoose.model("Move", Move);
+module.exports = Move;

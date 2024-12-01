@@ -15,7 +15,7 @@ const Game = ({ game }) => {
         <Link to={url}>{game.active ? "Active" : "Complete"}</Link>
       </td>
       <td>{date.toLocaleString()}</td>
-      <td>{game.moves}</td>
+      <td>{game.moves?.length}</td>
       <td>{game.score}</td>
       <td>{game.game}</td>
     </tr>
