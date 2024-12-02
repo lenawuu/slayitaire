@@ -101,6 +101,21 @@ export const Profile = (props) => {
     error: "",
   });
 
+  async function getUserData() {
+    await fetch("/v1/getUserData", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }
+
   const fetchUser = (username) => {
     fetch(`/v1/user/${username}`)
       .then((res) => res.json())

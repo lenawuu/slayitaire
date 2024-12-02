@@ -67,6 +67,13 @@ const HeaderRightBase = styled.div`
   }
 `;
 
+const CLIENT_ID = "Iv23liiWNCADHtB7RNC9";
+function loginWithGithub() {
+  window.location.assign(
+    "https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID
+  );
+}
+
 const HeaderRight = ({ user, email }) => {
   const isLoggedIn = user !== "";
   return (
@@ -80,12 +87,7 @@ const HeaderRight = ({ user, email }) => {
         </Fragment>
       ) : (
         <Fragment>
-          <Link id="loginLink" to="/login">
-            Log In
-          </Link>
-          <Link id="regLink" to="/register">
-            Register
-          </Link>
+          <button onClick={loginWithGithub}>Github login</button>
         </Fragment>
       )}
     </HeaderRightBase>

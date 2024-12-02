@@ -3,7 +3,10 @@
 
 const Joi = require("joi");
 const { filterGameForProfile } = require("../../solitare.cjs");
+const { default: user } = require("../../models/user.cjs");
 const sharedPromise = import("../../../shared/index.js");
+
+require("dotenv").config();
 
 module.exports = (app) => {
   // Schema for user info validation
@@ -13,8 +16,28 @@ module.exports = (app) => {
     first_name: Joi.string().allow(""),
     last_name: Joi.string().allow(""),
     city: Joi.string().default(""),
-    password: Joi.string().min(8).required(),
   });
+
+  async function getGithubUserData(token) {
+    const userData = await fetch("https://api.github.com/user", {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+
+    return userData;
+  }
 
   /**
    * Create a new user
@@ -28,17 +51,28 @@ module.exports = (app) => {
    * @return {201, {username,primary_email}} Return username and others
    */
   app.post("/v1/user", async (req, res) => {
-    const { validPassword } = await sharedPromise;
+    const token = req.get("Authorization");
+
+    const userData = await getGithubUserData(token);
+    if (userData) {
+      res.status(200).send(userData);
+    } else {
+      res.status(400).send({ error: "failure getting user data" });
+    }
+
+    const userCity = req.body.city;
+    const primary_email = req.body.primary_email;
+
     // Validate user input
-    let data;
+    let data = {
+      username: userData.login,
+      city: userCity,
+      primary_email,
+      first_name: userData.name.split()[0],
+      last_name: userData.name.split()[1],
+    };
     try {
       data = await schema.validateAsync(req.body, { stripUnknown: true });
-      // Deeper password validation
-      const pwdErr = validPassword(data.password);
-      if (pwdErr) {
-        console.log(`User.create password validation failure: ${pwdErr.error}`);
-        return res.status(400).send(pwdErr);
-      }
     } catch (err) {
       const message = err.details[0].message;
       console.log(`User.create validation failure: ${message}`);
@@ -151,6 +185,43 @@ module.exports = (app) => {
       const message = err.details[0].message;
       console.log(`User.update validation failure: ${message}`);
       res.status(400).send({ error: message });
+    }
+  });
+
+  // Get Github access token
+  app.get("/v1/getAccessToken", async (req, res) => {
+    const code = req.query.code;
+    const CLIENT_ID = process.env.CLIENT_ID;
+    const CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+    const params = `?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}`;
+
+    await fetch("https://github.com/login/oauth/access_token" + params, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ error: "failure getting access token" });
+      });
+  });
+
+  // get user data from github
+  app.get("/v1/getUserData", async (req, res) => {
+    const token = req.get("Authorization");
+
+    const userData = await getGithubUserData(token);
+    if (userData) {
+      res.status(200).send(userData);
+    } else {
+      res.status(400).send({ error: "failure getting user data" });
     }
   });
 };

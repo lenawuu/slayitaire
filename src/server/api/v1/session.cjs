@@ -13,17 +13,38 @@ module.exports = (app) => {
    */
   app.post("/v1/session", async (req, res) => {
     // Validate incoming request has username and password, if not return 400:'username and password are required'
-    const schema = Joi.object({
-      username: Joi.string().lowercase().required(),
-      password: Joi.string().required(),
-    });
     try {
-      const data = await schema.validateAsync(req.body, { stripUnknown: true });
+      // const data = await schema.validateAsync(req.body, { stripUnknown: true });
       // Search database for user
+      const userData = await fetch("https://api.github.com/user", {
+        method: "GET",
+        headers: {
+          Authorization: req.get("Authorization"),
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          return data;
+        })
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+
+      if (!userData) {
+        res
+          .status(400)
+          .send({ error: "failure getting user data from github" });
+      }
+
       try {
-        let user = await app.models.User.findOne({ username: data.username });
+        let user = await app.models.User.findOne({
+          username: userData.username,
+        });
         if (!user) res.status(401).send({ error: "unauthorized" });
-        else if (await user.authenticate(data.password)) {
+        else {
           // Regenerate session when signing in to prevent fixation
           req.session.regenerate(() => {
             req.session.user = user;
@@ -34,10 +55,6 @@ module.exports = (app) => {
               primary_email: user.primary_email,
             });
           });
-        } else {
-          // If not a match, return 401:unauthorized
-          console.log(`Session.login failed.  Incorrect credentials.`);
-          res.status(401).send({ error: "unauthorized" });
         }
       } catch (err) {
         res.status(500).send({ error: "internal server error" });

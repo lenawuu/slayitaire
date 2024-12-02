@@ -30,7 +30,7 @@ function formatMove(move) {
 }
 
 const Move = ({ move, index }) => {
-  const duration = (Date.now() - new Date(move.date)) / 1000;
+  const duration = (Date.now() - new Date(move.date)) / 1000; // todo: fix to log time in between moves
   return (
     <tr>
       <th>{move.id ? move.id : index + 1}</th>

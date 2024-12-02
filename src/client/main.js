@@ -16,6 +16,7 @@ import { Start } from "./components/start.js";
 import { Results } from "./components/results.js";
 import { Game } from "./components/game.js";
 import { EditProfile } from "./components/edit-profile.js";
+import { LoginSuccess } from "./components/login-success.js";
 
 const defaultUser = {
   username: "",
@@ -79,6 +80,7 @@ const CheckRegister = ({ loggedIn, username }) =>
  * @constructor
  */
 const MyApp = () => {
+  // todo: change ot accomodate for github login
   // If the user has logged in, grab info from sessionStorage
   const data = localStorage.getItem("user");
   let [state, setState] = useState(data ? JSON.parse(data) : defaultUser);
@@ -137,6 +139,7 @@ const MyApp = () => {
             path="/edit"
             element={<EditProfile currentUser={state.username} />}
           />
+          <Route path="/success" element={<LoginSuccess />} />
         </Routes>
       </GridBase>
     </BrowserRouter>

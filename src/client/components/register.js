@@ -15,19 +15,44 @@ import { validPassword, validUsername } from "../../shared/index.js";
 
 export const Register = () => {
   let navigate = useNavigate();
+  let [username, setUsername] = useState("");
   let [state, setState] = useState({
-    username: "",
-    first_name: "",
-    last_name: "",
-    city: "",
     primary_email: "",
-    password: "",
+    city: "",
   });
+  let [showEmailInput, setShowEmailInput] = useState(true);
   let [error, setError] = useState("");
-  let [notify, setNotify] = useState("");
 
   useEffect(() => {
-    document.getElementById("username").focus();
+    let accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      navigate("/");
+    } else {
+      getUserData();
+    }
+
+    async function getUserData() {
+      await fetch("/v1/getUserData", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setUsername(data.login);
+
+          if (data.email) {
+            setShowEmailInput(false);
+            setState({ primary_email: data.email });
+          }
+        });
+    }
+
+    document.getElementById("primary_email").focus();
   }, []);
 
   const onChange = (ev) => {
@@ -37,81 +62,59 @@ export const Register = () => {
       ...state,
       [ev.target.name]: ev.target.value,
     });
-    // Make sure the username is valid
-    if (ev.target.name === "username") {
-      let usernameInvalid = validUsername(ev.target.value);
-      if (usernameInvalid) setError(`Error: ${usernameInvalid.error}`);
-    }
-    // Make sure password is valid
-    else if (ev.target.name === "password") {
-      let pwdInvalid = validPassword(ev.target.value);
-      if (pwdInvalid) setError(`Error: ${pwdInvalid.error}`);
+    // Make sure email is valid
+    if (ev.target.name === "primary_email") {
+      let emailInvalid = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev.target.value);
+      if (emailInvalid) setError(`Error: ${emailInvalid.error}`); // FIXME: display correct error message
     }
   };
 
   const onSubmit = async (ev) => {
     ev.preventDefault();
     // Only proceed if there are no errors
-    if (error !== "") return;
+    if (error !== "" || primary_email === "" || city === "") return;
     const res = await fetch("/v1/user", {
       method: "POST",
-      body: JSON.stringify(state),
+      body: JSON.stringify({
+        username,
+        primary_email: state.primary_email,
+        city: state.city,
+      }),
       credentials: "include",
       headers: {
         "content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
     if (res.ok) {
-      // Notify users
-      setNotify(`${state.username} registered.  You will now need to log in.`);
+      const jsonData = await res.json();
+      if (jsonData.username) {
+        navigate(`/success`);
+      }
     } else {
       const err = await res.json();
       setError(err.error);
     }
   };
 
-  const onAcceptRegister = () => {
-    navigate("/login");
-  };
-
   return (
     <div style={{ gridArea: "main" }}>
-      {notify !== "" ? (
-        <ModalNotify
-          id="notification"
-          msg={notify}
-          onAccept={onAcceptRegister}
-        />
-      ) : null}
+      <p>Register</p>
       <ErrorMessage msg={error} />
       <FormBase>
-        <FormLabel htmlFor="username">Username:</FormLabel>
-        <FormInput
-          id="username"
-          name="username"
-          placeholder="Username"
-          onChange={onChange}
-          value={state.username}
-        />
-
-        <FormLabel htmlFor="first_name">First Name:</FormLabel>
-        <FormInput
-          id="first_name"
-          name="first_name"
-          placeholder="First Name"
-          onChange={onChange}
-          value={state.first_name}
-        />
-
-        <FormLabel htmlFor="last_name">Last Name:</FormLabel>
-        <FormInput
-          id="last_name"
-          name="last_name"
-          placeholder="Last Name"
-          onChange={onChange}
-          value={state.last_name}
-        />
-
+        {showEmailInput && (
+          <div>
+            <FormLabel htmlFor="primary_email">Email:</FormLabel>
+            <FormInput
+              id="primary_email"
+              name="primary_email"
+              type="email"
+              placeholder="Email Address"
+              onChange={onChange}
+              value={state.primary_email}
+            />
+          </div>
+        )}
         <FormLabel htmlFor="city">City:</FormLabel>
         <FormInput
           id="city"
@@ -119,25 +122,6 @@ export const Register = () => {
           placeholder="City"
           onChange={onChange}
           value={state.city}
-        />
-
-        <FormLabel htmlFor="primary_email">Email:</FormLabel>
-        <FormInput
-          id="primary_email"
-          name="primary_email"
-          type="email"
-          placeholder="Email Address"
-          onChange={onChange}
-          value={state.primary_email}
-        />
-        <FormLabel htmlFor="password">Password:</FormLabel>
-        <FormInput
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={onChange}
-          value={state.password}
         />
         <div />
         <FormButton id="submitBtn" onClick={onSubmit}>

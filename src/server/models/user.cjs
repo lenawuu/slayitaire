@@ -3,6 +3,7 @@
 
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+const { type } = require("os");
 const Schema = mongoose.Schema;
 
 /***************** User Model *******************/
@@ -20,8 +21,6 @@ let User = new Schema({
   first_name: { type: String, default: "" },
   last_name: { type: String, default: "" },
   city: { type: String, default: "" },
-  hash: { type: String, required: true },
-  salt: { type: String, required: true },
   games: [{ type: Schema.Types.ObjectId, ref: "Game" }],
 });
 
