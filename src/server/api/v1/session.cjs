@@ -41,7 +41,7 @@ module.exports = (app) => {
 
       try {
         let user = await app.models.User.findOne({
-          username: userData.username,
+          username: userData.login,
         });
         if (!user) res.status(401).send({ error: "User not registered" });
         else {

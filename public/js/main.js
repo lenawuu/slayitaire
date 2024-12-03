@@ -44031,7 +44031,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 
 // todo: add error handling for all fetches!
-var LoginSuccess = function LoginSuccess() {
+var LoginSuccess = function LoginSuccess(_ref) {
+  var logIn = _ref.logIn;
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var queryString = window.location.search;
@@ -44042,7 +44043,7 @@ var LoginSuccess = function LoginSuccess() {
       //   localStorage.getItem("accessToken") === null
       // ) {
       var getAccessToken = /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
@@ -44062,7 +44063,7 @@ var LoginSuccess = function LoginSuccess() {
           }, _callee);
         }));
         return function getAccessToken() {
-          return _ref.apply(this, arguments);
+          return _ref2.apply(this, arguments);
         };
       }();
       getAccessToken();
@@ -44098,7 +44099,7 @@ var LoginSuccess = function LoginSuccess() {
             case 9:
               username = data.username;
               getSessionData = /*#__PURE__*/function () {
-                var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+                var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
                   var res, _data;
                   return _regeneratorRuntime().wrap(function _callee2$(_context2) {
                     while (1) switch (_context2.prev = _context2.next) {
@@ -44140,7 +44141,7 @@ var LoginSuccess = function LoginSuccess() {
                         break;
                       case 15:
                         if (res.ok) {
-                          props.logIn(username);
+                          logIn(username);
                           navigate("/profile/".concat(username));
                         }
                       case 16:
@@ -44157,7 +44158,7 @@ var LoginSuccess = function LoginSuccess() {
                   }, _callee2, null, [[0, 18]]);
                 }));
                 return function getSessionData() {
-                  return _ref2.apply(this, arguments);
+                  return _ref3.apply(this, arguments);
                 };
               }();
               getSessionData();
@@ -46982,7 +46983,9 @@ var MyApp = function MyApp() {
     })
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_14__.Route, {
     path: "/success",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_login_success_js__WEBPACK_IMPORTED_MODULE_12__.LoginSuccess, null)
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_login_success_js__WEBPACK_IMPORTED_MODULE_12__.LoginSuccess, {
+      logIn: logIn
+    })
   }))));
 };
 var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(document.getElementById("mainDiv"));

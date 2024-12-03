@@ -139,7 +139,7 @@ const MyApp = () => {
             path="/edit"
             element={<EditProfile currentUser={state.username} />}
           />
-          <Route path="/success" element={<LoginSuccess />} />
+          <Route path="/success" element={<LoginSuccess logIn={logIn} />} />
         </Routes>
       </GridBase>
     </BrowserRouter>

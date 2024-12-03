@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // todo: add error handling for all fetches!
-export const LoginSuccess = () => {
+export const LoginSuccess = ({ logIn }) => {
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export const LoginSuccess = () => {
                 throw new Error(data.error);
               }
             } else if (res.ok) {
-              props.logIn(username);
+              logIn(username);
               navigate(`/profile/${username}`);
             }
           } catch (error) {
