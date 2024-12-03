@@ -43,7 +43,7 @@ module.exports = (app) => {
         let user = await app.models.User.findOne({
           username: userData.username,
         });
-        if (!user) res.status(401).send({ error: "unauthorized" });
+        if (!user) res.status(401).send({ error: "User not registered" });
         else {
           // Regenerate session when signing in to prevent fixation
           req.session.regenerate(() => {

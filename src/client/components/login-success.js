@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// todo: add error handling for all fetches!
 export const LoginSuccess = () => {
-  const [rerender, setRerender] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -10,7 +10,10 @@ export const LoginSuccess = () => {
     const urlParams = new URLSearchParams(queryString);
     const code = urlParams.get("code");
 
-    if (code && localStorage.getItem("accessToken") === null) {
+    if (code) {
+      //   (code && localStorage.getItem("accessToken") === "undefined") ||
+      //   localStorage.getItem("accessToken") === null
+      // ) {
       async function getAccessToken() {
         await fetch(`http://localhost:8080/v1/getAccessToken?code=${code}`)
           .then((response) => {
@@ -18,9 +21,8 @@ export const LoginSuccess = () => {
           })
           .then((data) => {
             console.log(data);
-            if (data.accessToken) {
-              localStorage.setItem("accessToken", data.accessToken);
-              setRerender(!rerender);
+            if (data.access_token) {
+              localStorage.setItem("accessToken", data.access_token);
             }
           });
       }
@@ -29,20 +31,24 @@ export const LoginSuccess = () => {
     }
 
     async function getUserData() {
-      await fetch("/v1/getUserData", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
+      try {
+        const response = await fetch("/v1/getUserData", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        const data = await response.json();
 
-          const fetchProfile = async ({ username }) => {
-            let res = await fetch("/v1/session", {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const username = data.username;
+
+        const getSessionData = async () => {
+          try {
+            const res = await fetch("/v1/session", {
               body: JSON.stringify({
                 username,
               }),
@@ -53,25 +59,32 @@ export const LoginSuccess = () => {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
               },
             });
-            const data = await res.json();
-            if (res.ok) {
-              props.logIn(data.login);
-              navigate(`/profile/${data.login}`);
-            } else {
-              console.error(data.error);
-              // see what error is when logging in without registering
-              navigate(`/register`);
-            }
-          };
 
-          fetchProfile(data.login);
-        });
+            const data = await res.json();
+
+            if (!res.ok) {
+              if (data.error === "User not registered") {
+                navigate("/register");
+              } else {
+                throw new Error(data.error);
+              }
+            } else if (res.ok) {
+              props.logIn(username);
+              navigate(`/profile/${username}`);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        getSessionData();
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    try {
-      getUserData();
-    } catch (error) {}
-  });
+    getUserData();
+  }, []);
 
   // change below whether registering or login
   return (

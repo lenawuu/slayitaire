@@ -39,7 +39,7 @@ const HeaderLeft = ({ user }) => {
   return (
     <HeaderLeftBase>
       {user !== "" ? (
-        <Link to={`/profile/${user}`}>
+        <Link to={`/`}>
           <h2>GrahamCard</h2>
         </Link>
       ) : (
@@ -70,7 +70,7 @@ const HeaderRightBase = styled.div`
 const CLIENT_ID = "Iv23liiWNCADHtB7RNC9";
 function loginWithGithub() {
   window.location.assign(
-    "https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID
+    `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
   );
 }
 

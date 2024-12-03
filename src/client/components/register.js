@@ -16,12 +16,7 @@ import { validPassword, validUsername } from "../../shared/index.js";
 export const Register = () => {
   let navigate = useNavigate();
   let [username, setUsername] = useState("");
-  let [state, setState] = useState({
-    primary_email: "",
-    city: "",
-  });
-  let [showEmailInput, setShowEmailInput] = useState(true);
-  let [error, setError] = useState("");
+  let [city, setCity] = useState("");
 
   useEffect(() => {
     let accessToken = localStorage.getItem("accessToken");
@@ -33,52 +28,41 @@ export const Register = () => {
     }
 
     async function getUserData() {
-      await fetch("/v1/getUserData", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setUsername(data.login);
-
-          if (data.email) {
-            setShowEmailInput(false);
-            setState({ primary_email: data.email });
-          }
+      try {
+        const res = await fetch("/v1/getUserData", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
+
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+
+        const data = await res.json();
+        setUsername(data.username);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    document.getElementById("primary_email").focus();
+    document.getElementById("city").focus();
   }, []);
 
   const onChange = (ev) => {
-    setError("");
-    // Update from form and clear errors
-    setState({
-      ...state,
-      [ev.target.name]: ev.target.value,
-    });
-    // Make sure email is valid
-    if (ev.target.name === "primary_email") {
-      let emailInvalid = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev.target.value);
-      if (emailInvalid) setError(`Error: ${emailInvalid.error}`); // FIXME: display correct error message
-    }
+    setCity(ev.target.value);
   };
 
   const onSubmit = async (ev) => {
     ev.preventDefault();
     // Only proceed if there are no errors
-    if (error !== "" || primary_email === "" || city === "") return;
+    if (city === "") return;
     const res = await fetch("/v1/user", {
       method: "POST",
       body: JSON.stringify({
         username,
-        primary_email: state.primary_email,
-        city: state.city,
+        city,
       }),
       credentials: "include",
       headers: {
@@ -99,29 +83,15 @@ export const Register = () => {
 
   return (
     <div style={{ gridArea: "main" }}>
-      <p>Register</p>
-      <ErrorMessage msg={error} />
+      <p>What city are you from?</p>
       <FormBase>
-        {showEmailInput && (
-          <div>
-            <FormLabel htmlFor="primary_email">Email:</FormLabel>
-            <FormInput
-              id="primary_email"
-              name="primary_email"
-              type="email"
-              placeholder="Email Address"
-              onChange={onChange}
-              value={state.primary_email}
-            />
-          </div>
-        )}
         <FormLabel htmlFor="city">City:</FormLabel>
         <FormInput
           id="city"
           name="city"
           placeholder="City"
           onChange={onChange}
-          value={state.city}
+          value={city}
         />
         <div />
         <FormButton id="submitBtn" onClick={onSubmit}>

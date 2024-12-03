@@ -18,27 +18,6 @@ module.exports = (app) => {
     city: Joi.string().default(""),
   });
 
-  async function getGithubUserData(token) {
-    const userData = await fetch("https://api.github.com/user", {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => {
-        console.log(err);
-        return null;
-      });
-
-    return userData;
-  }
-
   /**
    * Create a new user
    *
@@ -57,22 +36,24 @@ module.exports = (app) => {
     if (userData) {
       res.status(200).send(userData);
     } else {
-      res.status(400).send({ error: "failure getting user data" });
+      res.status(400).send({ error: "failure authorizing user" });
     }
 
     const userCity = req.body.city;
-    const primary_email = req.body.primary_email;
 
     // Validate user input
-    let data = {
-      username: userData.login,
+    let accountData = {
+      username: userData.username,
       city: userCity,
-      primary_email,
-      first_name: userData.name.split()[0],
-      last_name: userData.name.split()[1],
+      primary_email: userData.email,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
     };
+
     try {
-      data = await schema.validateAsync(req.body, { stripUnknown: true });
+      accountData = await schema.validateAsync(accountData, {
+        stripUnknown: true,
+      });
     } catch (err) {
       const message = err.details[0].message;
       console.log(`User.create validation failure: ${message}`);
@@ -81,13 +62,15 @@ module.exports = (app) => {
 
     // Try to create the user
     try {
-      let user = new app.models.User(data);
+      let user = new app.models.User(accountData);
       await user.save();
       // Send the happy response back
-      res.status(201).send({
-        username: data.username,
-        primary_email: data.primary_email,
-      });
+      res
+        .status(201)
+        .send({
+          username: accountData.username,
+          primary_email: accountData.primary_email,
+        });
     } catch (err) {
       console.log(err);
       // Error if username is already in use
@@ -213,11 +196,51 @@ module.exports = (app) => {
       });
   });
 
+  async function getGithubUserData(token) {
+    try {
+      const githubProfileRes = await fetch("https://api.github.com/user", {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const githubProfile = await githubProfileRes.json();
+
+      const emailsRes = await fetch("https://api.github.com/user/emails", {
+        method: "GET",
+        headers: {
+          Authorization: token,
+          Accept: "application/vnd.github+json",
+        },
+      });
+
+      const emails = await emailsRes.json();
+      let email = emails.filter((e) => e.primary === true)[0].email;
+
+      let first_name = githubProfile.name.split(" ")[0];
+      let last_name = githubProfile.name.split(" ")[1];
+
+      let userData = {
+        username: githubProfile.login,
+        email: email ? email : emails[0].email,
+        name: githubProfile.name,
+        first_name,
+        last_name,
+      };
+
+      return userData;
+    } catch (error) {
+      throw new Error("failure getting user data from github");
+    }
+  }
+
   // get user data from github
   app.get("/v1/getUserData", async (req, res) => {
     const token = req.get("Authorization");
 
     const userData = await getGithubUserData(token);
+
     if (userData) {
       res.status(200).send(userData);
     } else {
