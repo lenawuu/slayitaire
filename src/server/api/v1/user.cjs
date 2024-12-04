@@ -11,7 +11,7 @@ require("dotenv").config();
 module.exports = (app) => {
   // Schema for user info validation
   const schema = Joi.object({
-    username: Joi.string().lowercase().alphanum().max(32).required(),
+    username: Joi.string().lowercase().alphanum().min(3).max(32).required(),
     primary_email: Joi.string().lowercase().email().required(),
     first_name: Joi.string().allow(""),
     last_name: Joi.string().allow(""),
@@ -41,7 +41,7 @@ module.exports = (app) => {
 
     // Validate user input
     let accountData = {
-      username: userData.username,
+      username: "oungk", //testing
       city: userCity,
       primary_email: userData.email,
       first_name: userData.first_name,

@@ -28,7 +28,7 @@ User.path("username").validate(function (value) {
   if (!value) return false;
   if (reservedNames.indexOf(value) !== -1) return false;
   return (
-    value.length > 5 && value.length <= 16 && /^[a-zA-Z0-9]+$/i.test(value)
+    value.length > 3 && value.length <= 16 && /^[a-zA-Z0-9]+$/i.test(value)
   );
 }, "invalid username");
 
