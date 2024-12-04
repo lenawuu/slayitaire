@@ -19,7 +19,7 @@ export const Register = () => {
   let [city, setCity] = useState("");
 
   useEffect(() => {
-    let accessToken = localStorage.getItem("accessToken");
+    let accessToken = sessionStorage.getItem("accessToken");
 
     if (!accessToken) {
       navigate("/");
@@ -67,7 +67,7 @@ export const Register = () => {
       credentials: "include",
       headers: {
         "content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
       },
     });
     if (res.ok) {

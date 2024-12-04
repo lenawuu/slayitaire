@@ -82,7 +82,7 @@ const CheckRegister = ({ loggedIn, username }) =>
 const MyApp = () => {
   // todo: change ot accomodate for github login
   // If the user has logged in, grab info from sessionStorage
-  const data = localStorage.getItem("user");
+  const data = sessionStorage.getItem("user");
   let [state, setState] = useState(data ? JSON.parse(data) : defaultUser);
   console.log(`Starting as user: ${state.username}`);
 
@@ -95,14 +95,33 @@ const MyApp = () => {
   const logIn = async (username) => {
     const response = await fetch(`/v1/user/${username}`);
     const user = await response.json();
-    localStorage.setItem("user", JSON.stringify(user));
+    sessionStorage.setItem("user", JSON.stringify(user));
     setState(user);
   };
 
   // Helper for when a user logs out
   const logOut = () => {
-    // Wipe localStorage
-    localStorage.removeItem("user");
+    async function deleteSession() {
+      try {
+        const response = await fetch("/v1/session", {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(res.statusText);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    deleteSession();
+    // Wipe sessionStorage
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("accessToken");
     // Reset user state
     setState(defaultUser);
   };

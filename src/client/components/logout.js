@@ -11,7 +11,7 @@ export const Logout = ({ logOut }) => {
     // Log out the actual user - i.e. clear user data
     logOut();
     // Go to login page
-    navigate("/login");
+    navigate("/");
   });
   return <></>;
 };

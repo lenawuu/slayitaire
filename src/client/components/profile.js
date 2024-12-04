@@ -105,7 +105,7 @@ export const Profile = (props) => {
     await fetch("/v1/getUserData", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
       },
     })
       .then((response) => {

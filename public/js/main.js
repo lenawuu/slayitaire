@@ -44053,8 +44053,9 @@ var LoginSuccess = function LoginSuccess(_ref) {
                 }).then(function (data) {
                   console.log(data);
                   if (data.access_token) {
-                    localStorage.setItem("accessToken", data.access_token);
+                    sessionStorage.setItem("accessToken", data.access_token);
                   }
+                  getUserData();
                 });
               case 2:
               case "end":
@@ -44082,7 +44083,7 @@ var LoginSuccess = function LoginSuccess(_ref) {
               return fetch("/v1/getUserData", {
                 method: "GET",
                 headers: {
-                  Authorization: "Bearer ".concat(localStorage.getItem("accessToken"))
+                  Authorization: "Bearer ".concat(sessionStorage.getItem("accessToken"))
                 }
               });
             case 3:
@@ -44114,7 +44115,7 @@ var LoginSuccess = function LoginSuccess(_ref) {
                           credentials: "include",
                           headers: {
                             "content-type": "application/json",
-                            Authorization: "Bearer ".concat(localStorage.getItem("accessToken"))
+                            Authorization: "Bearer ".concat(sessionStorage.getItem("accessToken"))
                           }
                         });
                       case 3:
@@ -44176,7 +44177,6 @@ var LoginSuccess = function LoginSuccess(_ref) {
       }));
       return _getUserData.apply(this, arguments);
     }
-    getUserData();
   }, []);
 
   // change below whether registering or login
@@ -44341,7 +44341,7 @@ var Logout = function Logout(_ref) {
     // Log out the actual user - i.e. clear user data
     logOut();
     // Go to login page
-    navigate("/login");
+    navigate("/");
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null);
 };
@@ -44528,7 +44528,7 @@ var Profile = function Profile(props) {
             return fetch("/v1/getUserData", {
               method: "GET",
               headers: {
-                Authorization: "Bearer ".concat(localStorage.getItem("accessToken"))
+                Authorization: "Bearer ".concat(sessionStorage.getItem("accessToken"))
               }
             }).then(function (response) {
               return response.json();
@@ -44619,7 +44619,7 @@ var Register = function Register() {
     city = _useState4[0],
     setCity = _useState4[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var accessToken = localStorage.getItem("accessToken");
+    var accessToken = sessionStorage.getItem("accessToken");
     if (!accessToken) {
       navigate("/");
     } else {
@@ -44698,7 +44698,7 @@ var Register = function Register() {
               credentials: "include",
               headers: {
                 "content-type": "application/json",
-                Authorization: "Bearer ".concat(localStorage.getItem("accessToken"))
+                Authorization: "Bearer ".concat(sessionStorage.getItem("accessToken"))
               }
             });
           case 5:
@@ -46886,7 +46886,7 @@ var CheckRegister = function CheckRegister(_ref2) {
 var MyApp = function MyApp() {
   // todo: change ot accomodate for github login
   // If the user has logged in, grab info from sessionStorage
-  var data = localStorage.getItem("user");
+  var data = sessionStorage.getItem("user");
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(data ? JSON.parse(data) : defaultUser),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
@@ -46913,7 +46913,7 @@ var MyApp = function MyApp() {
             return response.json();
           case 5:
             user = _context.sent;
-            localStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("user", JSON.stringify(user));
             setState(user);
           case 8:
           case "end":
@@ -46928,8 +46928,49 @@ var MyApp = function MyApp() {
 
   // Helper for when a user logs out
   var logOut = function logOut() {
-    // Wipe localStorage
-    localStorage.removeItem("user");
+    function deleteSession() {
+      return _deleteSession.apply(this, arguments);
+    }
+    function _deleteSession() {
+      _deleteSession = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.prev = 0;
+              _context2.next = 3;
+              return fetch("/v1/session", {
+                method: "DELETE",
+                headers: {
+                  Authorization: "Bearer ".concat(sessionStorage.getItem("accessToken"))
+                }
+              });
+            case 3:
+              response = _context2.sent;
+              if (response.ok) {
+                _context2.next = 6;
+                break;
+              }
+              throw new Error(res.statusText);
+            case 6:
+              _context2.next = 11;
+              break;
+            case 8:
+              _context2.prev = 8;
+              _context2.t0 = _context2["catch"](0);
+              console.error(_context2.t0);
+            case 11:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, null, [[0, 8]]);
+      }));
+      return _deleteSession.apply(this, arguments);
+    }
+    deleteSession();
+    // Wipe sessionStorage
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("accessToken");
     // Reset user state
     setState(defaultUser);
   };

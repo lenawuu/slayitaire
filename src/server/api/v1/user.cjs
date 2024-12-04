@@ -65,12 +65,10 @@ module.exports = (app) => {
       let user = new app.models.User(accountData);
       await user.save();
       // Send the happy response back
-      res
-        .status(201)
-        .send({
-          username: accountData.username,
-          primary_email: accountData.primary_email,
-        });
+      res.status(201).send({
+        username: accountData.username,
+        primary_email: accountData.primary_email,
+      });
     } catch (err) {
       console.log(err);
       // Error if username is already in use
@@ -231,7 +229,7 @@ module.exports = (app) => {
 
       return userData;
     } catch (error) {
-      throw new Error("failure getting user data from github");
+      console.log(error);
     }
   }
 

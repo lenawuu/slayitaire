@@ -22,8 +22,9 @@ export const LoginSuccess = ({ logIn }) => {
           .then((data) => {
             console.log(data);
             if (data.access_token) {
-              localStorage.setItem("accessToken", data.access_token);
+              sessionStorage.setItem("accessToken", data.access_token);
             }
+            getUserData();
           });
       }
 
@@ -35,7 +36,7 @@ export const LoginSuccess = ({ logIn }) => {
         const response = await fetch("/v1/getUserData", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
           },
         });
         const data = await response.json();
@@ -56,7 +57,7 @@ export const LoginSuccess = ({ logIn }) => {
               credentials: "include",
               headers: {
                 "content-type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
               },
             });
 
@@ -82,8 +83,6 @@ export const LoginSuccess = ({ logIn }) => {
         console.error(error);
       }
     }
-
-    getUserData();
   }, []);
 
   // change below whether registering or login

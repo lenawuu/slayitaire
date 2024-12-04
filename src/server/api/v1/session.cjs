@@ -2,6 +2,9 @@
 "use strict";
 
 const Joi = require("joi");
+require("dotenv").config();
+
+const CLIENT_ID = process.env.CLIENT_ID;
 
 module.exports = (app) => {
   /**
@@ -72,7 +75,7 @@ module.exports = (app) => {
    *
    * @return { 204 if was logged in, 200 if no user in session }
    */
-  app.delete("/v1/session", (req, res) => {
+  app.delete("/v1/session", async (req, res) => {
     if (req.session.user) {
       req.session.destroy(() => {
         res.status(204).end();
