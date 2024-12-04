@@ -77,7 +77,7 @@ export const Register = ({ logIn }) => {
       }
     } else {
       const err = await res.json();
-      setError(err.error);
+      console.log(err);
     }
   };
 

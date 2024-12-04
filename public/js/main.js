@@ -44860,7 +44860,7 @@ var Register = function Register(_ref) {
             return res.json();
           case 15:
             err = _context2.sent;
-            setError(err.error);
+            console.log(err);
           case 17:
           case "end":
             return _context2.stop();
