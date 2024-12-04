@@ -33,6 +33,7 @@ const ProfileImage = styled.img`
   grid-area: pic;
   max-width: 150px;
   padding: 1em;
+  border-radius: 10%;
   @media (min-width: 500px) {
     padding: 0.5em;
     max-width: 200px;
@@ -42,7 +43,7 @@ const ProfileImage = styled.img`
 const ProfileBlock = (props) => {
   return (
     <ProfileBlockBase>
-      <ProfileImage src={GravHash(props.primary_email, 200)} />
+      <ProfileImage src={props.profile_pic} />
       <InfoBlock>
         <InfoLabels>
           <p>Username:</p>
@@ -99,6 +100,7 @@ export const Profile = (props) => {
     city: "",
     games: [],
     error: "",
+    profile_pic: "",
   });
 
   async function getUserData() {
@@ -112,7 +114,9 @@ export const Profile = (props) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        const profilePic = data.profile_pic;
+        setState((state) => ({ ...state, profile_pic: profilePic }));
+        return data;
       });
   }
 
@@ -127,6 +131,7 @@ export const Profile = (props) => {
 
   useEffect(() => {
     fetchUser(username);
+    getUserData();
   }, [username]);
 
   // Is the logged-in user viewing their own profile

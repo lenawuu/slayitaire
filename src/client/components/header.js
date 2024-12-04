@@ -1,7 +1,7 @@
 /* Copyright G. Hemingway, 2024 - All rights reserved */
 "use strict";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -76,13 +76,44 @@ function loginWithGithub() {
 
 const HeaderRight = ({ user, email }) => {
   const isLoggedIn = user !== "";
+  const [profilePic, setProfilePic] = useState("");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const accessToken = sessionStorage.getItem("accessToken");
+      const fetchUserData = async () => {
+        try {
+          const res = await fetch("/v1/getUserData", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (!res.ok) {
+            throw new Error(res.statusText);
+          }
+
+          const data = await res.json();
+          setProfilePic(data.profile_pic);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchUserData();
+    }
+  }, []);
+
   return (
     <HeaderRightBase $vertical={isLoggedIn}>
       {isLoggedIn ? (
         <Fragment>
           <Link to="/logout">Log Out</Link>
           <Link to={`/profile/${user}`}>
-            <img src={GravHash(email, 40)} />
+            <img
+              style={{ borderRadius: "8px", width: "50px", height: "50px" }}
+              src={profilePic}
+            />
           </Link>
         </Fragment>
       ) : (

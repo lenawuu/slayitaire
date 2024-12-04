@@ -12,8 +12,6 @@ import { validPassword, validUsername } from "../../shared/index.js";
 
 export const EditProfile = ({ currentUser }) => {
   const [profileData, setProfileData] = useState({
-    first_name: "",
-    last_name: "",
     city: "",
   });
   const [error, setError] = useState("");
@@ -64,26 +62,7 @@ export const EditProfile = ({ currentUser }) => {
 
   return (
     <div style={{ gridArea: "main" }}>
-      <ErrorMessage msg={error} />
       <FormBase>
-        <FormLabel htmlFor="first_name">First Name:</FormLabel>
-        <FormInput
-          id="first_name"
-          name="first_name"
-          placeholder="First Name"
-          onChange={onChange}
-          value={profileData.first_name}
-        />
-
-        <FormLabel htmlFor="last_name">Last Name:</FormLabel>
-        <FormInput
-          id="last_name"
-          name="last_name"
-          placeholder="Last Name"
-          onChange={onChange}
-          value={profileData.last_name}
-        />
-
         <FormLabel htmlFor="city">City:</FormLabel>
         <FormInput
           id="city"

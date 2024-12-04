@@ -142,8 +142,6 @@ module.exports = (app) => {
       return res.status(401).send({ error: "unauthorized" });
 
     const schema = Joi.object({
-      first_name: Joi.string().allow(""),
-      last_name: Joi.string().allow(""),
       city: Joi.string().allow(""),
     });
     try {
@@ -225,6 +223,7 @@ module.exports = (app) => {
         name: githubProfile.name,
         first_name,
         last_name,
+        profile_pic: githubProfile.avatar_url,
       };
 
       return userData;
