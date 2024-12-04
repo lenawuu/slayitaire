@@ -1,5 +1,5 @@
 {
-  "url": "http://localhost",
+  "url": "http://slayitaire.click",
   "api_version": "/v1",
   "mongodb": "mongodb://localhost:27017/wul18",
   "port": 8080,

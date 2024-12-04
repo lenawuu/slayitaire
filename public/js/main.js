@@ -44121,7 +44121,7 @@ var LoginSuccess = function LoginSuccess(_ref) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return fetch("http://localhost:8080/v1/getAccessToken?code=".concat(code)).then(function (response) {
+                return fetch("http://slayitaire.click/v1/getAccessToken?code=".concat(code)).then(function (response) {
                   return response.json();
                 }).then(function (data) {
                   console.log(data);
