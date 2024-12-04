@@ -43582,6 +43582,10 @@ var Game = function Game() {
     _useState6 = _slicedToArray(_useState5, 2),
     move = _useState6[0],
     setMove = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    clearClicked = _useState8[0],
+    setClearClicked = _useState8[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var getGameState = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -43668,13 +43672,15 @@ var Game = function Game() {
                 draw: data.draw,
                 discard: data.discard
               });
-              _context2.next = 15;
+              _context2.next = 17;
               break;
             case 12:
               _context2.prev = 12;
               _context2.t0 = _context2["catch"](0);
               console.error(_context2.t0.message);
-            case 15:
+              setMove(null);
+              setClearClicked(true);
+            case 17:
             case "end":
               return _context2.stop();
           }
@@ -43727,9 +43733,15 @@ var Game = function Game() {
       if (move) {
         console.log("clearing move");
         setMove(null);
+        setClearClicked(true);
       }
     }
   };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (clearClicked) {
+      setClearClicked(false);
+    }
+  }, [clearClicked]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(GameBase, {
     onClick: function onClick(e) {
       clearMove(e);
@@ -43741,6 +43753,7 @@ var Game = function Game() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.stack1,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         cards: cards,
@@ -43750,6 +43763,7 @@ var Game = function Game() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.stack2,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         cards: cards,
@@ -43759,6 +43773,7 @@ var Game = function Game() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.stack3,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         cards: cards,
@@ -43768,6 +43783,7 @@ var Game = function Game() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.stack4,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         cards: cards,
@@ -43777,6 +43793,7 @@ var Game = function Game() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardRowGap, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.draw,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "draw",
@@ -43786,6 +43803,7 @@ var Game = function Game() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.discard,
     spacing: 0,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "discard",
@@ -43798,6 +43816,7 @@ var Game = function Game() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile1,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile1",
@@ -43806,6 +43825,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile2,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile2",
@@ -43814,6 +43834,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile3,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile3",
@@ -43822,6 +43843,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile4,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile4",
@@ -43830,6 +43852,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile5,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile5",
@@ -43838,6 +43861,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile6,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile6",
@@ -43846,6 +43870,7 @@ var Game = function Game() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_pile_js__WEBPACK_IMPORTED_MODULE_1__.Pile, {
     cards: state.pile7,
+    clearClicked: clearClicked,
     onClick: function onClick(cards) {
       handleMove({
         loc: "pile7",
@@ -44417,7 +44442,19 @@ __webpack_require__.r(__webpack_exports__);
 /* Copyright G. Hemingway, 2024 - All rights reserved */
 
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var _templateObject, _templateObject2, _templateObject3;
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t) } })); }
 
 
@@ -44428,7 +44465,8 @@ var Card = function Card(_ref) {
     top = _ref.top,
     left = _ref.left,
     index = _ref.index,
-    handleCardClick = _ref.handleCardClick;
+    handleCardClick = _ref.handleCardClick,
+    clicked = _ref.clicked;
   var source = card.up ? "/images/".concat(card.value, "_of_").concat(card.suit, ".png") : "/images/face_down.jpg";
   var style = {
     left: "".concat(left, "%"),
@@ -44437,7 +44475,9 @@ var Card = function Card(_ref) {
   var id = "".concat(card.suit, ":").concat(card.value);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardImg, {
     id: id,
-    style: style,
+    style: _objectSpread(_objectSpread({}, style), {}, {
+      border: clicked ? "solid 4px red" : "none"
+    }),
     src: source,
     onClick: function onClick(e) {
       e.stopPropagation();
@@ -44455,9 +44495,22 @@ var Pile = function Pile(_ref2) {
     _ref2$horizontal = _ref2.horizontal,
     horizontal = _ref2$horizontal === void 0 ? false : _ref2$horizontal,
     up = _ref2.up,
-    _onClick = _ref2.onClick;
+    _onClick = _ref2.onClick,
+    clearClicked = _ref2.clearClicked;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    clicked = _useState2[0],
+    setClicked = _useState2[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (clearClicked) {
+      setClicked([]);
+    }
+  }, [clearClicked]);
   var _handleCardClick = function handleCardClick(index, cards) {
     var targetCards = cards.slice(index);
+    setClicked(targetCards.filter(function (card) {
+      return card.up;
+    }));
     _onClick(targetCards);
   };
   var children = cards.map(function (card, i) {
@@ -44472,7 +44525,8 @@ var Pile = function Pile(_ref2) {
       index: i,
       handleCardClick: function handleCardClick(index) {
         return _handleCardClick(index, cards);
-      }
+      },
+      clicked: clicked.includes(card)
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(PileBase, {

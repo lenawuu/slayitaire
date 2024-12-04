@@ -1,7 +1,7 @@
 /* Copyright G. Hemingway, 2024 - All rights reserved */
 "use strict";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ const CardImg = styled.img`
   width: 100%;
 `;
 
-export const Card = ({ card, top, left, index, handleCardClick }) => {
+export const Card = ({ card, top, left, index, handleCardClick, clicked }) => {
   const source = card.up
     ? `/images/${card.value}_of_${card.suit}.png`
     : "/images/face_down.jpg";
@@ -20,7 +20,7 @@ export const Card = ({ card, top, left, index, handleCardClick }) => {
   return (
     <CardImg
       id={id}
-      style={style}
+      style={{ ...style, border: clicked ? "solid 4px red" : "none" }}
       src={source}
       onClick={(e) => {
         e.stopPropagation();
@@ -49,9 +49,19 @@ export const Pile = ({
   horizontal = false,
   up,
   onClick,
+  clearClicked,
 }) => {
+  const [clicked, setClicked] = useState([]);
+
+  useEffect(() => {
+    if (clearClicked) {
+      setClicked([]);
+    }
+  }, [clearClicked]);
+
   const handleCardClick = (index, cards) => {
     const targetCards = cards.slice(index);
+    setClicked(targetCards.filter((card) => card.up));
     onClick(targetCards);
   };
 
@@ -67,6 +77,7 @@ export const Pile = ({
         left={left}
         index={i}
         handleCardClick={(index) => handleCardClick(index, cards)}
+        clicked={clicked.includes(card)}
       />
     );
   });

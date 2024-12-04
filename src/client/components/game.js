@@ -46,6 +46,7 @@ export const Game = () => {
   // let [target, setTarget] = useState(undefined);
   // let [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
   const [move, setMove] = useState(null);
+  let [clearClicked, setClearClicked] = useState(false);
 
   useEffect(() => {
     const getGameState = async () => {
@@ -102,6 +103,8 @@ export const Game = () => {
         });
       } catch (error) {
         console.error(error.message);
+        setMove(null);
+        setClearClicked(true);
       }
     };
 
@@ -156,9 +159,16 @@ export const Game = () => {
       if (move) {
         console.log("clearing move");
         setMove(null);
+        setClearClicked(true);
       }
     }
   };
+
+  useEffect(() => {
+    if (clearClicked) {
+      setClearClicked(false);
+    }
+  }, [clearClicked]);
 
   return (
     <GameBase
@@ -174,6 +184,7 @@ export const Game = () => {
         <Pile
           cards={state.stack1}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ cards, loc: "stack1" });
           }}
@@ -181,6 +192,7 @@ export const Game = () => {
         <Pile
           cards={state.stack2}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ cards, loc: "stack2" });
           }}
@@ -188,6 +200,7 @@ export const Game = () => {
         <Pile
           cards={state.stack3}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ cards, loc: "stack3" });
           }}
@@ -195,6 +208,7 @@ export const Game = () => {
         <Pile
           cards={state.stack4}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ cards, loc: "stack4" });
           }}
@@ -203,6 +217,7 @@ export const Game = () => {
         <Pile
           cards={state.draw}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "draw", cards });
           }}
@@ -210,6 +225,7 @@ export const Game = () => {
         <Pile
           cards={state.discard}
           spacing={0}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "discard", cards });
           }}
@@ -222,42 +238,49 @@ export const Game = () => {
       >
         <Pile
           cards={state.pile1}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile1", cards });
           }}
         />
         <Pile
           cards={state.pile2}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile2", cards });
           }}
         />
         <Pile
           cards={state.pile3}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile3", cards });
           }}
         />
         <Pile
           cards={state.pile4}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile4", cards });
           }}
         />
         <Pile
           cards={state.pile5}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile5", cards });
           }}
         />
         <Pile
           cards={state.pile6}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile6", cards });
           }}
         />
         <Pile
           cards={state.pile7}
+          clearClicked={clearClicked}
           onClick={(cards) => {
             handleMove({ loc: "pile7", cards });
           }}
