@@ -15,7 +15,7 @@ export const LoginSuccess = ({ logIn }) => {
       //   localStorage.getItem("accessToken") === null
       // ) {
       async function getAccessToken() {
-        await fetch(`http://slayitaire.click/v1/getAccessToken?code=${code}`)
+        await fetch(`/v1/getAccessToken?code=${code}`)
           .then((response) => {
             return response.json();
           })
