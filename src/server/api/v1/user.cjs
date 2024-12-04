@@ -41,7 +41,7 @@ module.exports = (app) => {
 
     // Validate user input
     let accountData = {
-      username: "oungk", //testing
+      username: userData.username,
       city: userCity,
       primary_email: userData.email,
       first_name: userData.first_name,
