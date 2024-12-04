@@ -80,11 +80,9 @@ const CheckRegister = ({ loggedIn, username }) =>
  * @constructor
  */
 const MyApp = () => {
-  // todo: change ot accomodate for github login
   // If the user has logged in, grab info from sessionStorage
   const data = sessionStorage.getItem("user");
   let [state, setState] = useState(data ? JSON.parse(data) : defaultUser);
-  console.log(`Starting as user: ${state.username}`);
 
   // Helper to check if the user is logged in or not
   const loggedIn = () => {
@@ -127,7 +125,12 @@ const MyApp = () => {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <GridBase>
         <Header user={state.username} email={state.primary_email} />
         <Routes>

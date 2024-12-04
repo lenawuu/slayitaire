@@ -40,10 +40,10 @@ const HeaderLeft = ({ user }) => {
     <HeaderLeftBase>
       {user !== "" ? (
         <Link to={`/`}>
-          <h2>GrahamCard</h2>
+          <h2>Slayitaire</h2>
         </Link>
       ) : (
-        <h2>GrahamCard</h2>
+        <h2>Slayitaire</h2>
       )}
     </HeaderLeftBase>
   );

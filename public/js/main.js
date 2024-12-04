@@ -43936,7 +43936,7 @@ var HeaderLeft = function HeaderLeft(_ref) {
   var user = _ref.user;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(HeaderLeftBase, null, user !== "" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
     to: "/"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "GrahamCard")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "GrahamCard"));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Slayitaire")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Slayitaire"));
 };
 HeaderLeft.propTypes = {
   user: prop_types__WEBPACK_IMPORTED_MODULE_4__.string
@@ -44078,7 +44078,7 @@ function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.fre
 
 var LandingBase = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  grid-area: main;\n"])));
 var Landing = function Landing() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(LandingBase, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Edit profile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Results"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Github Login?")));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(LandingBase, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Edit profile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Results"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", null, "Github Login")));
 };
 
 /***/ }),
@@ -44476,7 +44476,7 @@ var Card = function Card(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardImg, {
     id: id,
     style: _objectSpread(_objectSpread({}, style), {}, {
-      border: clicked ? "solid 4px red" : "none"
+      border: clicked ? "solid 2px red" : "none"
     }),
     src: source,
     onClick: function onClick(e) {
@@ -44921,8 +44921,9 @@ function formatMove(move) {
 }
 var Move = function Move(_ref) {
   var move = _ref.move,
-    index = _ref.index;
-  var duration = (Date.now() - new Date(move.date)) / 1000; // todo: fix to log time in between moves
+    index = _ref.index,
+    prevMoveDate = _ref.prevMoveDate;
+  var duration = index === 0 ? 0 : (new Date(move.date) - new Date(prevMoveDate)) / 1000;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, move.id ? move.id : index + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, duration, " seconds"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
     to: "/profile/".concat(move.player)
   }, move.player)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, formatMove(move)));
@@ -44938,7 +44939,8 @@ var MovesList = function MovesList(_ref2) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Move, {
       key: index,
       move: move,
-      index: index
+      index: index,
+      prevMoveDate: index === 0 ? null : moves[index - 1].date
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MovesListTable, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Id"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Duration"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Player"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, "Move Details"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, moveElements));
@@ -45115,7 +45117,7 @@ function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.fre
 
 
 
-var gameNames = ["klondike", "pyramid", "canfield", "golf", "yukon", "hearts"];
+var gameNames = ["klondike"];
 var GameTypesBase = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: flex;\n  flex-direction: column;\n  margin-right: 1em;\n"])));
 var GameTypes = function GameTypes(_ref) {
   var game = _ref.game,
@@ -45229,7 +45231,7 @@ var Start = function Start(_ref3) {
     id: "color",
     name: "color",
     onChange: onChange
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", null, "Red"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", null, "Green"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", null, "Blue"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", null, "Magical"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_shared_js__WEBPACK_IMPORTED_MODULE_1__.FormButton, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", null, "Blue"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_shared_js__WEBPACK_IMPORTED_MODULE_1__.FormButton, {
     id: "startBtn",
     onClick: onSubmit
   }, "Start"));
@@ -46999,14 +47001,12 @@ var CheckRegister = function CheckRegister(_ref2) {
  * @constructor
  */
 var MyApp = function MyApp() {
-  // todo: change ot accomodate for github login
   // If the user has logged in, grab info from sessionStorage
   var data = sessionStorage.getItem("user");
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(data ? JSON.parse(data) : defaultUser),
     _useState2 = _slicedToArray(_useState, 2),
     state = _useState2[0],
     setState = _useState2[1];
-  console.log("Starting as user: ".concat(state.username));
 
   // Helper to check if the user is logged in or not
   var loggedIn = function loggedIn() {
@@ -47089,7 +47089,12 @@ var MyApp = function MyApp() {
     // Reset user state
     setState(defaultUser);
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(GridBase, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_header_js__WEBPACK_IMPORTED_MODULE_2__.Header, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(GridBase, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_header_js__WEBPACK_IMPORTED_MODULE_2__.Header, {
     user: state.username,
     email: state.primary_email
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_14__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_14__.Route, {

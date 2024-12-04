@@ -7,14 +7,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ErrorMessage, FormButton } from "./shared.js";
 
-const gameNames = [
-  "klondike",
-  "pyramid",
-  "canfield",
-  "golf",
-  "yukon",
-  "hearts",
-];
+const gameNames = ["klondike"];
 
 const GameTypesBase = styled.div`
   display: flex;
@@ -134,10 +127,7 @@ export const Start = ({ history }) => {
           <div>
             <label htmlFor="color">Card Color:</label>
             <select id="color" name="color" onChange={onChange}>
-              <option>Red</option>
-              <option>Green</option>
               <option>Blue</option>
-              <option>Magical</option>
             </select>
           </div>
         </StartOptions>

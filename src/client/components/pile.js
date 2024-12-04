@@ -20,7 +20,7 @@ export const Card = ({ card, top, left, index, handleCardClick, clicked }) => {
   return (
     <CardImg
       id={id}
-      style={{ ...style, border: clicked ? "solid 4px red" : "none" }}
+      style={{ ...style, border: clicked ? "solid 2px red" : "none" }}
       src={source}
       onClick={(e) => {
         e.stopPropagation();

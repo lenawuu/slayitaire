@@ -137,7 +137,6 @@ module.exports = (app) => {
       return isNaN(number) ? cardValues[value] : number;
     };
 
-    // todo: maybe do this check in the frontend
     if (src === dst) {
       throw new Error("source and destination cannot be the same");
     }
@@ -255,7 +254,6 @@ module.exports = (app) => {
     const move = sanitized(req.body);
     const gameId = req.params.gameId;
 
-    // todo: store gamestate in memory until move is successful, so we don't have to keep fetching it
     let game = await app.models.Game.findById(gameId);
     if (!game) {
       res.status(404).send({ error: `unknown game: ${gameId}` });

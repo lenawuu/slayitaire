@@ -15,7 +15,7 @@ export const Landing = () => (
     <ul>
       <li>Edit profile</li>
       <li>Results</li>
-      <li>Github Login?</li>
+      <li>Github Login</li>
     </ul>
   </LandingBase>
 );

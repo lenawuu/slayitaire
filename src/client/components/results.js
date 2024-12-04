@@ -29,8 +29,9 @@ function formatMove(move) {
   return formatted;
 }
 
-const Move = ({ move, index }) => {
-  const duration = (Date.now() - new Date(move.date)) / 1000; // todo: fix to log time in between moves
+const Move = ({ move, index, prevMoveDate }) => {
+  const duration =
+    index === 0 ? 0 : (new Date(move.date) - new Date(prevMoveDate)) / 1000;
   return (
     <tr>
       <th>{move.id ? move.id : index + 1}</th>
@@ -64,7 +65,12 @@ const MovesListTable = styled.table`
 
 const MovesList = ({ moves }) => {
   let moveElements = moves.map((move, index) => (
-    <Move key={index} move={move} index={index} />
+    <Move
+      key={index}
+      move={move}
+      index={index}
+      prevMoveDate={index === 0 ? null : moves[index - 1].date}
+    />
   ));
   return (
     <MovesListTable>
