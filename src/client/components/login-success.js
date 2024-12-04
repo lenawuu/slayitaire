@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 // todo: add error handling for all fetches!
 export const LoginSuccess = ({ logIn }) => {
   let navigate = useNavigate();
+  const [loginStatus, setLoginStatus] = useState("Attempting login...");
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -29,6 +30,8 @@ export const LoginSuccess = ({ logIn }) => {
       }
 
       getAccessToken();
+    } else if (sessionStorage.getItem("accessToken")) {
+      getUserData();
     }
 
     async function getUserData() {
@@ -64,31 +67,44 @@ export const LoginSuccess = ({ logIn }) => {
             const data = await res.json();
 
             if (!res.ok) {
+              setLoginStatus("Going to registration page...");
               if (data.error === "User not registered") {
                 navigate("/register");
               } else {
                 throw new Error(data.error);
               }
             } else if (res.ok) {
+              setLoginStatus("Login successful! Taking you to login page...");
               logIn(username);
               navigate(`/profile/${username}`);
             }
           } catch (error) {
-            console.error(error);
+            if (error.message !== "User not registered") {
+              console.log(error);
+            }
           }
         };
 
         getSessionData();
       } catch (error) {
-        console.error(error);
+        if (error.message !== "User not registered") {
+          console.log(error);
+        }
       }
     }
   }, []);
 
   // change below whether registering or login
   return (
-    <div>
-      <h1>Login successful! </h1>
+    <div
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        width: "100%",
+      }}
+    >
+      <h1>{loginStatus}</h1>
     </div>
   );
 };

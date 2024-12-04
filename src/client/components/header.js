@@ -97,12 +97,12 @@ const HeaderRight = ({ user, email }) => {
           const data = await res.json();
           setProfilePic(data.profile_pic);
         } catch (error) {
-          console.error(error);
+          console.log(error);
         }
       };
       fetchUserData();
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <HeaderRightBase $vertical={isLoggedIn}>

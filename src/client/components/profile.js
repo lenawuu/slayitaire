@@ -116,7 +116,6 @@ export const Profile = (props) => {
       .then((data) => {
         const profilePic = data.profile_pic;
         setState((state) => ({ ...state, profile_pic: profilePic }));
-        return data;
       });
   }
 

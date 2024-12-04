@@ -67,11 +67,11 @@ const ReqUser = ({ user, children }) =>
  * @returns {JSX.Element}
  * @constructor
  */
-const CheckRegister = ({ loggedIn, username }) =>
+const CheckRegister = ({ logIn, loggedIn, username }) =>
   loggedIn ? (
     <Navigate to={`/profile/${username}`} replace={true} />
   ) : (
-    <Register />
+    <Register logIn={logIn} />
   );
 
 /***
@@ -112,7 +112,7 @@ const MyApp = () => {
           throw new Error(res.statusText);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
 
@@ -140,7 +140,11 @@ const MyApp = () => {
           <Route
             path="/register"
             element={
-              <CheckRegister loggedIn={loggedIn()} username={state.username} />
+              <CheckRegister
+                logIn={logIn}
+                loggedIn={loggedIn()}
+                username={state.username}
+              />
             }
           />
           <Route

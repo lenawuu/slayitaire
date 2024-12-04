@@ -125,6 +125,11 @@ module.exports = (app) => {
   // Game logic
   const validateMove = (move, gameState) => {
     const { src, dst, cards } = move;
+
+    if (cards.length === 0) {
+      throw new Error("no cards to move");
+    }
+
     const convertToNumber = (value) => {
       const cardValues = {
         ace: 1,

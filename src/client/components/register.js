@@ -13,7 +13,7 @@ import {
 } from "./shared.js";
 import { validPassword, validUsername } from "../../shared/index.js";
 
-export const Register = () => {
+export const Register = ({ logIn }) => {
   let navigate = useNavigate();
   let [username, setUsername] = useState("");
   let [city, setCity] = useState("");
@@ -43,7 +43,7 @@ export const Register = () => {
         const data = await res.json();
         setUsername(data.username);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
 

@@ -11,6 +11,10 @@ function formatMove(move) {
   const dstType = move.dst.replace(/\d+$/, "");
   const srcType = move.src.replace(/\d+$/, "");
 
+  if (move.cards.length === 0) {
+    return "no cards moved";
+  }
+
   const card = `${move.cards[0].value} of ${move.cards[0].suit.charAt(0).toUpperCase() + move.cards[0].suit.slice(1)}`;
 
   let formatted = "";

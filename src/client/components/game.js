@@ -102,14 +102,13 @@ export const Game = () => {
           discard: data.discard,
         });
       } catch (error) {
-        console.error(error.message);
+        console.log(error.message);
         setMove(null);
         setClearClicked(true);
       }
     };
 
     if (move?.src && move?.dst) {
-      console.log(move);
       makeMove();
       setMove(null);
     }

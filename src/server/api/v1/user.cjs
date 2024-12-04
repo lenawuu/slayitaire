@@ -33,10 +33,8 @@ module.exports = (app) => {
     const token = req.get("Authorization");
 
     const userData = await getGithubUserData(token);
-    if (userData) {
-      res.status(200).send(userData);
-    } else {
-      res.status(400).send({ error: "failure authorizing user" });
+    if (!userData) {
+      throw new Error({ error: "failure authorizing user" });
     }
 
     const userCity = req.body.city;
@@ -110,6 +108,8 @@ module.exports = (app) => {
     })
       .populate("games")
       .exec();
+
+    console.log(user);
 
     if (!user)
       res.status(404).send({ error: `unknown user: ${req.params.username}` });
